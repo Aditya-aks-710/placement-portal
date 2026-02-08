@@ -26,6 +26,14 @@ public class PlacementService {
         return placementRequestRepository.findByStatus(status);
     }
 
+    public List<PlacementRequest> getRequestsByCampusMode(String campusMode) {
+        return placementRequestRepository.findByCampusMode(campusMode);
+    }
+
+    public List<PlacementRequest> getRequestsByPlacementNature(String placementNature) {
+        return placementRequestRepository.findByPlacementNature(placementNature);
+    }
+
     public PlacementRequest approveRequest(String requestId) {
 
         PlacementRequest request = placementRequestRepository.findById(requestId)

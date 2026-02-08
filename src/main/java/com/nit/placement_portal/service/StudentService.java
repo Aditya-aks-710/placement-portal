@@ -23,7 +23,18 @@ public class StudentService {
         Student student = studentRepository.findById(studentId)
             .orElseThrow(() -> new RuntimeException("Student Not Found"));
 
-        student.setStatus("Pending");
+        student.setStatus("PENDING");
         return studentRepository.save(student);
+    }
+
+    public List<Student> getStudentsByStatus(String status) {
+        List<Student> students = studentRepository.findByStatus(status);
+
+        for(Student s : students) {
+            if(s.getStatus() == null){
+                s.setStatus("UNPLACED");
+            }
+        }
+        return students;
     }
 }

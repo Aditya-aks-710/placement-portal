@@ -21,4 +21,8 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
+    @GetMapping(params = "status")
+    public List<Student> getStudentsByStatus(@RequestParam String status) {
+        return studentService.getStudentsByStatus(status);
+    }
 }

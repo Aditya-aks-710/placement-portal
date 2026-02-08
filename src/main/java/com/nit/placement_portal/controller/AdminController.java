@@ -12,14 +12,29 @@ public class AdminController {
 
     private final PlacementService placementService;
 
-    public AdminController(PlacementService placementService, HelloController helloController) {
+    public AdminController(PlacementService placementService) {
         this.placementService = placementService;
     }
 
     @GetMapping("/placement-requests")
     public List<PlacementRequest> getRequestsByStatus(
-        @RequestParam(defaultValue = "PENDING") String status) {
-            return placementService.getRequestsByStatus(status);
+        @RequestParam(required = false) String status,
+        @RequestParam(required = false) String campusMode,
+        @RequestParam(required = false) String placementNature ) {
+
+            if(status != null) {
+                return placementService.getRequestsByStatus(status);
+            }
+
+            if(campusMode != null) {
+                return placementService.getRequestsByCampusMode(campusMode);
+            }
+
+            if(placementNature != null) {
+                return placementService.getRequestsByPlacementNature(placementNature);
+            }
+
+            return placementService.getRequestsByStatus("PENDING");
     }
 
     @PutMapping("/placement-requests/{id}/approve")

@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface PlacementRequestRepository extends MongoRepository<PlacementRequest, String>{
     List<PlacementRequest> findByStatus(String status);
+
+    List<PlacementRequest> findByCampusMode(String campusMode);
+
+    List<PlacementRequest> findByPlacementNature(String placementNature);
 }
