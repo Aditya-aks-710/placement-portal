@@ -5,8 +5,11 @@ import com.nit.placement_portal.model.Student;
 import com.nit.placement_portal.repository.PlacementRequestRepository;
 import com.nit.placement_portal.repository.StudentRepository;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @Service
@@ -40,7 +43,10 @@ public class PlacementService {
                 .orElseThrow(() -> new RuntimeException("Request Not Found"));
 
         if(!"PENDING".equals(request.getStatus())) {
-            throw new RuntimeException("Only pending requests can be approved");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Only pending requests can be approved"
+                );
         }
 
         request.setStatus("APPROVED");
@@ -61,7 +67,10 @@ public class PlacementService {
                 .orElseThrow(() -> new RuntimeException("Request Not Found"));
         
         if(!"PENDING".equals(request.getStatus())) {
-            throw new RuntimeException("Only Pending Requests can be Rejected");
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Only Pending Requests can be Rejected"
+            );
         }
 
         request.setStatus("REJECTED");
