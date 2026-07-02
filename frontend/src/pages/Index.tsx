@@ -115,7 +115,7 @@ const Index = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <Select value={branchFilter} onValueChange={setBranchFilter}>
-                <SelectTrigger className="h-10 w-[200px] text-sm bg-white/10 border-white/20 text-primary-foreground">
+                <SelectTrigger className="h-10 w-full sm:w-[200px] text-sm bg-white/10 border-white/20 text-primary-foreground">
                   <SelectValue placeholder="Select Branch" />
                 </SelectTrigger>
                 <SelectContent>
@@ -127,7 +127,7 @@ const Index = () => {
               </Select>
 
               <Select value={batchFilter} onValueChange={setBatchFilter}>
-                <SelectTrigger className="h-10 w-[170px] text-sm bg-white/10 border-white/20 text-primary-foreground">
+                <SelectTrigger className="h-10 w-full sm:w-[170px] text-sm bg-white/10 border-white/20 text-primary-foreground">
                   <SelectValue placeholder="Select Batch" />
                 </SelectTrigger>
                 <SelectContent>

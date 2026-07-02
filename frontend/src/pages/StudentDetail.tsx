@@ -154,7 +154,7 @@ const StudentDetail = () => {
 
   const tabs = [
     { key: "overview" as const, label: "Overview" },
-    { key: "interviews" as const, label: "Interview Experiences" },
+    { key: "interviews" as const, label: "Interviews" },
     { key: "education" as const, label: "Education" },
     { key: "skills" as const, label: "Skills" },
   ];
@@ -226,12 +226,13 @@ const StudentDetail = () => {
       </section>
 
       <main className="container -mt-12">
-        <div className="elevated-card rounded-xl p-1.5 mb-6 inline-flex gap-1">
+        <div className="mb-6">
+          <div className="elevated-card grid grid-cols-4 gap-1 rounded-xl p-1.5 sm:inline-flex">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+              className={`whitespace-nowrap rounded-lg px-2 py-2 text-center text-xs font-medium transition-all sm:px-4 sm:text-sm ${
                 activeTab === tab.key
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -240,6 +241,7 @@ const StudentDetail = () => {
               {tab.label}
             </button>
           ))}
+          </div>
         </div>
 
         {activeTab === "overview" && (

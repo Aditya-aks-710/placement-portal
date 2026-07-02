@@ -58,14 +58,14 @@ const FilterBar = ({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2.5">
+      <div className="flex flex-wrap items-center gap-2.5">
         <div className="flex items-center gap-1.5">
           <Filter className="h-3.5 w-3.5 text-muted-foreground" />
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Filters</span>
         </div>
 
         <Select value={statusFilter} onValueChange={onStatusChange}>
-          <SelectTrigger className="h-8 w-[140px] text-xs bg-card border-border/50">
+          <SelectTrigger className="h-8 w-full sm:w-[140px] text-xs bg-card border-border/50">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -78,7 +78,7 @@ const FilterBar = ({
         </Select>
 
         <Select value={companyFilter} onValueChange={onCompanyChange}>
-          <SelectTrigger className="h-8 w-[160px] text-xs bg-card border-border/50">
+          <SelectTrigger className="h-8 w-full sm:w-[160px] text-xs bg-card border-border/50">
             <SelectValue placeholder="Company" />
           </SelectTrigger>
           <SelectContent>
