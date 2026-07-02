@@ -496,6 +496,7 @@ public class StudentService {
 
     private EducationDTO toEducationDTO(Education education) {
         EducationDTO dto = new EducationDTO();
+        dto.setId(education.getId());
         dto.setDegree(education.getDegree());
         dto.setInstitution(education.getInstitution());
         dto.setYear(education.getYear());
