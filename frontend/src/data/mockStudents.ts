@@ -42,6 +42,7 @@ export interface InterviewExperience {
 }
 
 export interface Education {
+  id?: string;
   degree: string;
   institution: string;
   year: string;
