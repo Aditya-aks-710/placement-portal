@@ -17,15 +17,17 @@ import {
   Building2,
   Pencil,
   Plus,
+  Trash2,
   X,
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { getStudents, updateStudentSkills } from "@/lib/api";
+import { deleteEducation, getStudents, updateStudentSkills } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import AddExperienceDialog from "@/components/AddExperienceDialog";
+import AddEducationDialog from "@/components/AddEducationDialog";
 import AddPlacementDialog from "@/components/AddPlacementDialog";
 import ConvertEngagementDialog from "@/components/ConvertEngagementDialog";
 import ProgressEngagementDialog from "@/components/ProgressEngagementDialog";
@@ -67,6 +69,19 @@ const StudentDetail = () => {
       toast.error(err instanceof Error ? err.message : "Failed to update skills");
     },
   });
+
+  const educationDeleteMutation = useMutation({
+    mutationFn: (educationId: string) => deleteEducation(student!.id, educationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["students"]
+      });
+    },
+    onError: (err) => {
+      toast.error(err instanceof Error ? err.message : "Failed to remove education");
+    },
+  });
+
   const errorMessage = error instanceof Error ? error.message : "Unable to load student details from backend.";
 
   if (isLoading) {
@@ -491,19 +506,73 @@ const StudentDetail = () => {
 
         {activeTab === "education" && (
           <div className="space-y-4 animate-fade-in">
-            {student.education.map((edu, i) => (
-              <div key={i} className="elevated-card rounded-xl p-5 flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-muted">
-                  <GraduationCap className="h-6 w-6 text-accent" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-foreground">{edu.degree}</h3>
-                  <p className="text-sm text-muted-foreground">{edu.institution}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{edu.year}</p>
-                </div>
-                <Badge variant="outline" className="font-semibold">{edu.grade}</Badge>
+            {student.education.length > 0 && canEdit && (
+              <div className="elevated-card rounded-xl p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-muted-foreground">
+                  Add your degrees, schools, or certifications.
+                </p>
+                <AddEducationDialog
+                  studentId={student.id}
+                  trigger={
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                      <Plus className="mr-2 h-4 w-4"/>
+                      Add Education
+                    </Button>
+                  }
+                  />
               </div>
-            ))}
+            )}
+
+            {student.education.length === 0 ? (
+              <div className="elevated-card rounded-xl p-12 text-center">
+                <GraduationCap className="mx-auto h-10 w-10 text-muted-foreground/30" />
+                <p className="mt-3 text-muted-foreground">
+                  No education added yet.
+                </p>
+                {canEdit && (
+                  <AddEducationDialog 
+                    studentId={student.id}
+                    trigger={
+                      <Button variant="outline" size="sm" className="mt-5">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add education
+                      </Button>
+                    }
+                    />
+                )}
+              </div>
+            ) : (
+              student.education.map((edu, i) => (
+                <div key={edu.id ?? i} className="elevated-card rounded-xl p-5 flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-muted">
+                    <GraduationCap className="h-6 w-6 text-accent" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold text-foreground">{edu.degree}</h3>
+                    <p className="text-sm text-muted-foreground">{edu.institution}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{edu.year}</p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {edu.grade && (
+                      <Badge variant="outline" className="font-semibold">{edu.grade}</Badge>
+                    )}
+                    {canEdit && edu.id && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Remove education"
+                        disabled={educationDeleteMutation.isPending}
+                        onClick={() => educationDeleteMutation.mutate(edu.id!)}
+                        className="text-muted-foreground hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
 
