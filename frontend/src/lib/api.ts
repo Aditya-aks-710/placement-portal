@@ -476,6 +476,39 @@ export async function submitInterviewExperience(input: InterviewExperienceInput)
   });
 }
 
+// ---------------------------------------------------------------------------
+// Profile: education
+// ---------------------------------------------------------------------------
+
+export type EducationInput = {
+  degree: string;
+  institution: string;
+  year: string;
+  grade: string;
+};
+
+export type EducationRecord = EducationInput & { id: string };
+
+export async  function submitEducation(
+  studentId: string,
+  input: EducationInput
+): Promise<EducationRecord> {
+  return apiFetch<EducationRecord>(`/api/students/${studentId}/education`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json"},
+    body: JSON.stringify(input)
+  });
+}
+
+export async function deleteEducation(
+  studentId: string,
+  educationId: string
+): Promise<void> {
+  await apiFetch<void>(`/api/students/${studentId}/education/${educationId}`, {
+    method: "DELETE"
+  });
+}
+
 export default {
   getStudents,
   getStudentsPage,
@@ -491,5 +524,7 @@ export default {
   deleteStudentCompany,
   updateStudentSkills,
   submitInterviewExperience,
+  submitEducation,
+  deleteEducation,
   submitPlacementRequest,
 };
