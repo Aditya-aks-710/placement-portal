@@ -49,10 +49,11 @@ const AddEducationDialog = ({
                 grade: grade.trim(),
             }),
         onSuccess: () => {
-            toast.success("Education Added");
+          toast.success("Education added");
             queryClient.invalidateQueries({
                 queryKey: ["students"]
             });
+            setOpen(false);
         },
         onError: (err) => toast.error(err instanceof Error ? err.message : "Failed to add education"),
     });

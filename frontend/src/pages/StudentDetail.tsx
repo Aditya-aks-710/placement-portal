@@ -76,6 +76,7 @@ const StudentDetail = () => {
       queryClient.invalidateQueries({
         queryKey: ["students"]
       });
+      toast.success("Education removed");
     },
     onError: (err) => {
       toast.error(err instanceof Error ? err.message : "Failed to remove education");
